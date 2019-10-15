@@ -11,22 +11,27 @@ namespace placemybet.Controllers
     public class ApuestasController : ApiController
     {
         // GET: api/Apuestas
-        public IEnumerable<string> Get()
+        public IEnumerable<ApuestasDTO> Get()
         {
-            return new string[] { "value1", "value2" };
+            var repo = new apuestasRepository();
+            //List<apuestas> apuesta = repo.retrieve();
+            List<ApuestasDTO> apuesta = repo.retrieveDTO();
+            return apuesta;
         }
 
         // GET: api/Apuestas/5
         public apuestas Get(int id)
         {
-            var repo = new apuestasRepository();
-            apuestas d = repo.retrieve();
-            return d;
+            /*var repo = new apuestasRepository();
+            apuestas d = repo.retrieve();*/
+            return null;
         }
 
         // POST: api/Apuestas
-        public void Post([FromBody]string value)
+        public void Post([FromBody]apuestas apuesta)
         {
+            var repo = new apuestasRepository();
+            repo.save(apuesta);
         }
 
         // PUT: api/Apuestas/5
