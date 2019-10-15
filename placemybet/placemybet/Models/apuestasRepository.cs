@@ -66,9 +66,13 @@ namespace placemybet.Models
 
         internal void save(apuestas d)
         {
+
+          
+
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
-            command.CommandText = "insert into apuestas(tipo,cuota,apostado,correo_usuario,esOver) values ('"+ d.tipo + "','" + d.cuota + "','" + d.apostado + "','" + d.correo_usuario + "','" + d.esOver + "');";
+            //command.CommandText = "insert into apuestas(tipo,cuota,apostado,correo_usuario,esOver) values ('"+ d.tipo + "','" + d.cuota + "','" + d.apostado + "','" + d.correo_usuario + "','" + d.esOver + "');";
+            command.CommandText = "insert into apuestas(tipo,cuota,apostado,correo_usuario,ID_mercados,esOver) values ('" + d.tipo + "','" + d.cuota + "','" + d.apostado + "','" + d.correo_usuario + "','" + d.ID_mercados + "','" + d.esOver + "');";
             Debug.WriteLine("command " + command.CommandText);
             try
             {
@@ -81,5 +85,55 @@ namespace placemybet.Models
                 Debug.WriteLine("se ha producido un error de conexion");
             }
         }
+
+        /*internal List<ApuestasDTO> cuotas()
+        {
+            int dineroOver = 0;
+            int dineroUnder = 0;
+            int probabilidadOver = 0;
+            int probabilidadUnder = 0;
+            List<ApuestasDTO> apuestas = new List<ApuestasDTO>();
+            foreach (ApuestasDTO apuesta in apuestas)
+            {
+                if (apuesta.esOver == 1)
+                {
+                    dineroOver = dineroOver + Convert.ToInt32(apuesta.apostado);
+                    probabilidadOver = dineroOver / (dineroOver + dineroUnder);
+                }
+                else
+                {
+                    dineroUnder = dineroUnder + Convert.ToInt32(apuesta.apostado);
+                    probabilidadUnder = dineroUnder / (dineroOver + dineroUnder);
+                }
+            }
+            decimal cuotaOver = Convert.ToDecimal((1 / probabilidadOver) * 0.95);
+            decimal cuotaUnder = Convert.ToDecimal((1 / probabilidadUnder) * 0.95);
+            decimal[] valores = { cuotaOver , cuotaUnder };
+            return apuesta;
+
+            /*int dineroOver = 0;
+            int dineroUnder = 0;
+            int probabilidadOver = 0;
+            int probabilidadUnder = 0;
+            if (d.esOver == 1)
+            {
+                dineroOver = dineroOver + Convert.ToInt32(d.apostado);
+                probabilidadOver = dineroOver / (dineroOver + dineroUnder);
+            }
+            else
+            {
+                dineroUnder = dineroUnder + Convert.ToInt32(d.apostado);
+                probabilidadUnder = dineroUnder / (dineroOver + dineroUnder);
+            }
+
+            Double cuotaOver = (1 / probabilidadOver) * 0.95;
+            Double cuotaUnder = (1 / probabilidadUnder) * 0.95;
+            Convert.ToInt32(cuotaOver);
+
+            return cuotaOver;
+
+        }*/
+
+
     }
 }
