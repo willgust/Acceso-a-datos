@@ -19,6 +19,15 @@ namespace placemybet.Controllers
             return evento;
         }
 
+        // GET: api/Eventos?ID_eventos=ID_eventos
+        public IEnumerable<MercadosDTO> Getevento(int ID_eventos) // metodo xa mostrar los mercados vinculados a la id de eventos
+        {
+            var repo = new eventosRepository();
+            //List<eventos> evento = repo.retrieve();
+            List<MercadosDTO> mercado = repo.retrieveByIDEvento(ID_eventos);
+            return mercado;
+        }
+
         // GET: api/Eventos/5
         public eventos Get(int id)
         {

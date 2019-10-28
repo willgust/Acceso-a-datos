@@ -67,8 +67,6 @@ namespace placemybet.Models
         internal void save(apuestas d)
         {
 
-          
-
             MySqlConnection con = Connect();
             MySqlCommand command = con.CreateCommand();
             //command.CommandText = "insert into apuestas(tipo,cuota,apostado,correo_usuario,esOver) values ('"+ d.tipo + "','" + d.cuota + "','" + d.apostado + "','" + d.correo_usuario + "','" + d.esOver + "');";
@@ -86,6 +84,37 @@ namespace placemybet.Models
             }
         }
 
+        internal List<ApuestaCorreo> retrieveCorreo(string correo)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "SELECT mercados.ID_eventos,apuestas.tipo,esOver,cuota,apostado FROM apuestas INNER JOIN mercados ON apuestas.ID_mercados = mercados.ID WHERE apuestas.correo_usuario = @correo";
+            command.Parameters.AddWithValue("@correo", correo);
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                ApuestaCorreo d = null;
+                List<ApuestaCorreo> apuesta = new List<ApuestaCorreo>();
+                while (res.Read())
+                {
+                    Debug.WriteLine("Recuperando: "+ res.GetInt32(0)+ " " + res.GetString(1) + " " + res.GetInt32(2)  + " " + res.GetDouble(3) + " " + res.GetDouble(4));
+                    d = new ApuestaCorreo(res.GetInt32(0), res.GetString(1), res.GetInt32(2), res.GetDouble(3), res.GetDouble(4));
+                    apuesta.Add(d);
+                }
+
+                con.Close();
+                return apuesta;
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("se ha producido un error de conexion");
+                return null;
+            }
+        }
+
         /*internal List<ApuestasDTO> cuotas()
         {
             int dineroOver = 0;
@@ -93,23 +122,40 @@ namespace placemybet.Models
             int probabilidadOver = 0;
             int probabilidadUnder = 0;
             List<ApuestasDTO> apuestas = new List<ApuestasDTO>();
-            foreach (ApuestasDTO apuesta in apuestas)
+            
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "select * from apuestas";
+            con.Open();
+            MySqlDataReader res = command.ExecuteReader();
+
+            ApuestasDTO d = null;
+            List<ApuestasDTO> apuesta = new List<ApuestasDTO>();
+            while (res.Read())
             {
-                if (apuesta.esOver == 1)
+                Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetString(1) + " " + res.GetDecimal(2) + " " + res.GetDecimal(3) + " " + res.GetString(4) + " " + res.GetInt32(5) + " " + res.GetInt32(6));
+                d = new ApuestasDTO(res.GetString(1), res.GetDecimal(2), res.GetDecimal(3), res.GetString(4), res.GetInt32(6));
+                apuesta.Add(d);
+            }
+
+            con.Close();
+            foreach (ApuestasDTO item in apuesta)
+            {
+                if (item.esOver == 1)
                 {
-                    dineroOver = dineroOver + Convert.ToInt32(apuesta.apostado);
+                    dineroOver = dineroOver + Convert.ToInt32(item.apostado);
                     probabilidadOver = dineroOver / (dineroOver + dineroUnder);
                 }
                 else
                 {
-                    dineroUnder = dineroUnder + Convert.ToInt32(apuesta.apostado);
+                    dineroUnder = dineroUnder + Convert.ToInt32(item.apostado);
                     probabilidadUnder = dineroUnder / (dineroOver + dineroUnder);
                 }
             }
             decimal cuotaOver = Convert.ToDecimal((1 / probabilidadOver) * 0.95);
             decimal cuotaUnder = Convert.ToDecimal((1 / probabilidadUnder) * 0.95);
             decimal[] valores = { cuotaOver , cuotaUnder };
-            return apuesta;
+            return valores;
 
             /*int dineroOver = 0;
             int dineroUnder = 0;

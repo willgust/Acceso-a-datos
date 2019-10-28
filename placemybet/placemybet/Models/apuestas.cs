@@ -48,4 +48,24 @@ namespace placemybet.Models
         
     }
 
+    public class ApuestaCorreo
+    {
+        public ApuestaCorreo(int evento, string tipoMercado, int esOver, double cuota, double apostado)
+        {
+            this.evento = evento;
+            this.tipoMercado = tipoMercado;
+            this.esOver = esOver;
+            this.cuota = cuota;
+            this.apostado = apostado;
+        }
+
+        public int evento { get; set; }
+        public string tipoMercado { get; set; }
+        public int esOver { get; set; }
+        public double cuota { get; set; }
+        public double apostado { get; set; }
+
+
+    }
+
 }

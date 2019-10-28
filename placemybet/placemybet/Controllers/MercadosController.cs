@@ -19,6 +19,16 @@ namespace placemybet.Controllers
             return mercado;
         }
 
+        // GET: api/Mercados?ID_mercado=ID_mercado
+        public IEnumerable<MercadoID> Getmercado(int ID_mercado) //metodo xa Para un mercado concreto, recuperar todas sus apuestas. Al menos, con la siguiente informacion: email de usuario, tipo de mercado(1.5, 2.5 o 3.5), tipo de apuesta(over/under), cuota y dinero apostado.
+        {
+            var repo = new mercadosRepository();
+            //List<mercados> mercado = repo.retrieve();
+            List<MercadoID> mercado = repo.retrieveID(ID_mercado);
+            return mercado;
+        }
+
+
         // GET: api/Mercados/5
         public mercados Get(int id)
         {

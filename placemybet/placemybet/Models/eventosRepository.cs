@@ -62,5 +62,35 @@ namespace placemybet.Models
             return evento;
         }
 
+        internal List<MercadosDTO> retrieveByIDEvento(int ID_eventos)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "select * from mercados where ID_eventos = @id";
+            command.Parameters.AddWithValue("@id", ID_eventos);
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                MercadosDTO d = null;
+                List<MercadosDTO> mercado = new List<MercadosDTO>();
+                while (res.Read())
+                {
+                    Debug.WriteLine("Recuperando: " + res.GetDecimal(1) + " " + res.GetDecimal(2) + " " + res.GetDecimal(3));
+                    d = new MercadosDTO(res.GetDecimal(1), res.GetDecimal(2), res.GetDecimal(3));
+                    mercado.Add(d);
+                }
+                con.Close();
+                return mercado;
+            }
+            catch(MySqlException e)
+            {
+                Debug.WriteLine("se ha producido un error de conexion");
+                return null;
+            }
+        }
+
     }
 }

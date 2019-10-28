@@ -19,6 +19,15 @@ namespace placemybet.Controllers
             return apuesta;
         }
 
+        // GET: api/Apuestas?correo=correo
+        public IEnumerable<ApuestaCorreo> Get(string correo) //un get q pasando un correo nos da evento, tipo de mercado (1.5, 2.5 o 3.5), tipo de apuesta (over/under), cuota y dinero apostado
+        {
+            var repo = new apuestasRepository();
+            //List<apuestas> apuesta = repo.retrieve();
+            List<ApuestaCorreo> apuesta = repo.retrieveCorreo(correo);
+            return apuesta;
+        }
+
         // GET: api/Apuestas/5
         public apuestas Get(int id)
         {

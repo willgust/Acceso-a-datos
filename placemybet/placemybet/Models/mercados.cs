@@ -45,4 +45,22 @@ namespace placemybet.Models
         public decimal cuotaUnder { get; set; }
        
     }
+
+    public class MercadoID
+    {
+        public MercadoID(string correo, decimal tipo, int esOver, decimal cuota, decimal apostados)
+        {
+            this.correo = correo;
+            this.tipo = tipo;
+            this.esOver = esOver;
+            this.cuota = cuota;
+            this.apostados = apostados;
+        }
+
+        public string correo { get; set; }
+        public decimal tipo { get; set; }
+        public int esOver { get; set; }
+        public decimal cuota { get; set; }
+        public decimal apostados { get; set; }
+    }
 }

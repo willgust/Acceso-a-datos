@@ -62,5 +62,36 @@ namespace placemybet.Models
             return mercado;
         }
 
+        internal List<MercadoID> retrieveID(int ID)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "SELECT apuestas.correo_usuario,mercados.tipo,apuestas.esOver,apuestas.cuota,apuestas.apostado FROM mercados INNER JOIN apuestas ON apuestas.ID_mercados=mercados.ID WHERE mercados.ID = @ID";
+            command.Parameters.AddWithValue("@ID", ID);
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                MercadoID d = null;
+                List<MercadoID> mercado = new List<MercadoID>();
+                while (res.Read())
+                {
+                    Debug.WriteLine("Recuperando: " + res.GetString(0) + " " + res.GetDecimal(1) + " " + res.GetInt32(2) + " " + res.GetDecimal(3) + " " + res.GetDecimal(4));
+                    d = new MercadoID(res.GetString(0), res.GetDecimal(1), res.GetInt32(2), res.GetDecimal(3), res.GetDecimal(4));
+                    mercado.Add(d);
+                }
+
+                con.Close();
+                return mercado;
+            }
+            catch(MySqlException e)
+            {
+                Debug.WriteLine("se ha producido un error de conexion");
+                return null;
+            }
+        }
+
     }
 }
