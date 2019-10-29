@@ -37,6 +37,7 @@ namespace placemybet.Controllers
         }
 
         // POST: api/Apuestas
+        [Authorize] //obligamos al usuario a estar autentificado xa realizar la apuesta
         public void Post([FromBody]apuestas apuesta)
         {
             var repo = new apuestasRepository();

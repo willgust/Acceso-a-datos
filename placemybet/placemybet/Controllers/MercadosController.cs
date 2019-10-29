@@ -20,6 +20,7 @@ namespace placemybet.Controllers
         }
 
         // GET: api/Mercados?ID_mercado=ID_mercado
+        [Authorize(Roles ="Admin")]//solo los usuarios con rol admin podran usar esta funcionalidad
         public IEnumerable<MercadoID> Getmercado(int ID_mercado) //metodo xa Para un mercado concreto, recuperar todas sus apuestas. Al menos, con la siguiente informacion: email de usuario, tipo de mercado(1.5, 2.5 o 3.5), tipo de apuesta(over/under), cuota y dinero apostado.
         {
             var repo = new mercadosRepository();
